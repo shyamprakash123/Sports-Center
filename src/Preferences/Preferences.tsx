@@ -6,6 +6,10 @@ import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "../config/constants";
 import closeIcon from "../assets/images/close.svg";
+import { fetchMatches } from "../context/matches/actions";
+import { useArticlesDispatch } from "../context/articles/context";
+import { useMatchesDispatch } from "../context/matches/context";
+import { fetchArticles } from "../context/articles/actions";
 
 const fetchPreferences = async (
   setPreferences: (data: any) => void,
@@ -72,6 +76,8 @@ const updatePreferences = async (preferences: any, closeModal: () => void) => {
 };
 const Preferences = () => {
   let [isOpen, setIsOpen] = useState(true);
+  const matchDispatch = useMatchesDispatch();
+  const articleDispatch = useArticlesDispatch();
 
   const [preferences, setPreferences] = useState<any>(null);
   const [sports, setSports] = useState<any>(null);
@@ -82,6 +88,8 @@ const Preferences = () => {
   let navigate = useNavigate();
 
   function closeModal() {
+    fetchMatches(matchDispatch);
+    fetchArticles(articleDispatch);
     setIsOpen(false);
     navigate("../");
   }

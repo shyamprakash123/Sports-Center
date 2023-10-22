@@ -1,3 +1,5 @@
+import { Preferences } from "../matches/reducer";
+
 export interface Article {
   id: number;
   date: Date;
@@ -13,11 +15,16 @@ export interface ArticlesState {
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
+  preferences: Preferences;
 }
 
 export type ArticlesActions =
   | { type: "FETCH_ARTICLES_REQUEST" }
-  | { type: "FETCH_ARTICLES_SUCCESS"; payload: Article[] }
+  | {
+      type: "FETCH_ARTICLES_SUCCESS";
+      payload: Article[];
+      preferences: Preferences;
+    }
   | { type: "UPDATE_ARTICLES_SUCCESS"; payload: Article }
   | { type: "FETCH_ARTICLES_FAILURE"; payload: string };
 
@@ -26,6 +33,7 @@ export const initialState: ArticlesState = {
   isLoading: false,
   isError: false,
   errorMessage: "",
+  preferences: {},
 };
 
 export const reducer = (
@@ -43,6 +51,7 @@ export const reducer = (
         ...state,
         isLoading: false,
         articles: action.payload,
+        preferences: action.preferences,
       };
     case "UPDATE_ARTICLES_SUCCESS":
       return {

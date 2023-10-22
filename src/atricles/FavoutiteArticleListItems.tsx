@@ -10,6 +10,10 @@ import React, { useEffect } from "react";
 import { API_ENDPOINT } from "../../src/config/constants";
 import { Link } from "react-router-dom";
 
+const checkLogin = () => {
+  return localStorage.getItem("authTokenSportsCenter") !== null;
+};
+
 const fetchTeams = async (
   setData: (data: any) => void,
   setSportsList: (data: any) => void
@@ -48,7 +52,7 @@ export default function FavouriteArticleListItems() {
   const [sport, setSport] = React.useState<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [team, setTeam] = React.useState<any>(null);
-  const { articles, isLoading, isError, errorMessage } = state;
+  const { articles, isLoading, isError, errorMessage, preferences } = state;
 
   useEffect(() => {
     fetchTeams(setData, setSportsList);
@@ -61,6 +65,26 @@ export default function FavouriteArticleListItems() {
   if (isError) {
     return <span>{errorMessage}</span>;
   }
+
+  const articleList = () => {
+    const arti = articles.filter(
+      (article: any) =>
+        (article.teams.filter((item: any) => item.name === team).length > 0 ||
+          team === null) &&
+        (article.sport.name === sport || sport === null) &&
+        ((checkLogin() &&
+          (preferences.sports.includes(article.sport.name) ||
+            preferences.sports.length === 0) &&
+          (preferences.sports.includes(article.sport.name) ||
+            preferences.sports.length === 0) &&
+          (article.teams.filter((item: any) =>
+            preferences.teams.includes(item.name)
+          ).length > 0 ||
+            preferences.teams.length === 0)) ||
+          checkLogin() === false)
+    );
+    return arti;
+  };
 
   return (
     <div className="w-1/4 p-4 shadow rounded-lg ml-3">
@@ -84,17 +108,26 @@ export default function FavouriteArticleListItems() {
               setTeam(null);
             } else {
               setSport(e.target.value);
+              setTeam(null);
             }
           }}
         >
           <option value={"Sport0"}>Choose a Sport</option>
-          {sportsList?.map((item: any) => {
-            return (
-              <option key={item.id} value={item.name}>
-                {item.name}
-              </option>
-            );
-          })}
+          {sportsList
+            ?.filter(
+              (sport: any) =>
+                (checkLogin() &&
+                  (preferences.sports.includes(sport.name) ||
+                    preferences.sports.length === 0)) ||
+                checkLogin() === false
+            )
+            .map((item: any) => {
+              return (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              );
+            })}
         </select>
         <select
           id="team"
@@ -111,7 +144,14 @@ export default function FavouriteArticleListItems() {
           <option value={"Team0"}>Choose a Team</option>
           {sport != null
             ? data
-                ?.filter((item: any) => item.plays === sport)
+                ?.filter(
+                  (item: any) =>
+                    item.plays === sport &&
+                    ((checkLogin() &&
+                      (preferences.teams.includes(item.name) ||
+                        preferences.teams.length === 0)) ||
+                      checkLogin() === false)
+                )
                 ?.map((item: any) => {
                   return (
                     <option key={item.id} value={item.name}>
@@ -123,14 +163,8 @@ export default function FavouriteArticleListItems() {
         </select>
       </div>
       <div className="overflow-y-auto max-h-[510px] ">
-        {articles
-          .filter(
-            (article: Article) =>
-              (article.teams.filter((item) => item.name === team).length > 0 ||
-                team === null) &&
-              (article.sport.name === sport || sport === null)
-          )
-          .map((article: Article) => {
+        {articleList().length > 0 ? (
+          articleList().map((article: Article) => {
             const date = new Date(article.date);
             const daysOfWeek = [
               "Sunday",
@@ -220,7 +254,10 @@ export default function FavouriteArticleListItems() {
                 </div>
               </div>
             );
-          })}
+          })
+        ) : (
+          <div>No Articles Found...</div>
+        )}
       </div>
     </div>
   );

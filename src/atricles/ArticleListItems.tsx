@@ -9,6 +9,10 @@ import React, { useEffect } from "react";
 import { API_ENDPOINT } from "../../src/config/constants";
 import { Link } from "react-router-dom";
 
+const checkLogin = () => {
+  return localStorage.getItem("authTokenSportsCenter") !== null;
+};
+
 const fetchSports = async (setSportsList: (data: any) => void) => {
   const token = localStorage.getItem("authTokenSportsCenter") ?? "";
 
@@ -35,7 +39,7 @@ export default function ArticleListItems() {
   useEffect(() => {
     fetchSports(setSportsList);
   }, []);
-  const { articles, isLoading, isError, errorMessage } = state;
+  const { articles, isLoading, isError, errorMessage, preferences } = state;
 
   if (articles.length === 0 && isLoading) {
     return <span>Loading...</span>;
@@ -48,9 +52,18 @@ export default function ArticleListItems() {
   const articleList = () => {
     const arti = articles.filter(
       (article: any) =>
-        currentSport === article.sport.name || currentSport === null
+        (currentSport === article.sport.name || currentSport === null) &&
+        ((checkLogin() &&
+          (preferences.sports.includes(article.sport.name) ||
+            preferences.sports.length === 0) &&
+          (preferences.sports.includes(article.sport.name) ||
+            preferences.sports.length === 0) &&
+          (article.teams.filter((item: any) =>
+            preferences.teams.includes(item.name)
+          ).length > 0 ||
+            preferences.teams.length === 0)) ||
+          checkLogin() === false)
     );
-
     return arti;
   };
 
@@ -68,21 +81,29 @@ export default function ArticleListItems() {
         >
           {"Trending"}
         </button>
-        {sportsList?.map((sport: any) => {
-          return (
-            <button
-              key={sport.id}
-              className={`${
-                sport != null && sport.name === currentSport
-                  ? "bg-blue-600"
-                  : "bg-blue-400"
-              } hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full mr-2`}
-              onClick={() => setSport(sport.name)}
-            >
-              {sport.name}
-            </button>
-          );
-        })}
+        {sportsList
+          ?.filter(
+            (sport: any) =>
+              (checkLogin() &&
+                (preferences.sports.includes(sport.name) ||
+                  preferences.sports.length === 0)) ||
+              checkLogin() === false
+          )
+          .map((sport: any) => {
+            return (
+              <button
+                key={sport.id}
+                className={`${
+                  sport != null && sport.name === currentSport
+                    ? "bg-blue-600"
+                    : "bg-blue-400"
+                } hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full mr-2`}
+                onClick={() => setSport(sport.name)}
+              >
+                {sport.name}
+              </button>
+            );
+          })}
       </div>
       <div className="overflow-y-auto max-h-[620px] ">
         {articleList().length > 0

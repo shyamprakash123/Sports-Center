@@ -124,6 +124,14 @@ const Appbar = () => {
                     <img src={SettingIcon} alt="settings" />
                   </Link>
                 ) : null}
+                {isLogedin ? (
+                  <h2 className="text-xl font-medium text-gray-700 dark:text-white tracking-tight ml-5">
+                    {
+                      JSON.parse(localStorage.getItem("userDataSportsCenter")!)
+                        .name
+                    }
+                  </h2>
+                ) : null}
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="rounded-full bg-white p-1 text-gray-400 hover:text-blue-600">

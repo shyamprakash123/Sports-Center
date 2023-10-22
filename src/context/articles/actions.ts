@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_ENDPOINT } from "../../config/constants";
 
+const checkLogin = () => {
+  return localStorage.getItem("authTokenSportsCenter") !== null;
+};
+
 export const fetchArticles = async (dispatch: any) => {
   const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+  let preferences = undefined;
 
   try {
     dispatch({ type: "FETCH_ARTICLES_REQUEST" });
@@ -13,8 +18,25 @@ export const fetchArticles = async (dispatch: any) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    if (checkLogin()) {
+      const responsePreference = await fetch(
+        `${API_ENDPOINT}/user/preferences`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      preferences = await responsePreference.json();
+    }
     const data = await response.json();
-    dispatch({ type: "FETCH_ARTICLES_SUCCESS", payload: data });
+    dispatch({
+      type: "FETCH_ARTICLES_SUCCESS",
+      payload: data,
+      preferences: preferences?.preferences,
+    });
   } catch (error) {
     console.log("Error fetching articles:", error);
     dispatch({

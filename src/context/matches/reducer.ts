@@ -3,16 +3,26 @@ interface Match {
   name: string;
 }
 
+export interface Preferences {
+  sports?: string[];
+  teams?: string[];
+}
+
 export interface MatchesState {
   matches: Match[];
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
+  preferences: Preferences;
 }
 
 export type MatchesActions =
   | { type: "FETCH_MATCHES_REQUEST" }
-  | { type: "FETCH_MATCHES_SUCCESS"; payload: Match[] }
+  | {
+      type: "FETCH_MATCHES_SUCCESS";
+      payload: Match[];
+      preferences: Preferences;
+    }
   | { type: "UPDATE_MATCHES_SUCCESS"; payload: Match }
   | { type: "FETCH_MATCHES_FAILURE"; payload: string };
 
@@ -21,6 +31,7 @@ export const initialState: MatchesState = {
   isLoading: false,
   isError: false,
   errorMessage: "",
+  preferences: {},
 };
 
 export const reducer = (
@@ -38,6 +49,7 @@ export const reducer = (
         ...state,
         isLoading: false,
         matches: action.payload,
+        preferences: action.preferences,
       };
     case "UPDATE_MATCHES_SUCCESS":
       return {
