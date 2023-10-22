@@ -1,10 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  useArticlesDispatch,
-  useArticlesState,
-} from "../context/articles/context";
+import { useArticlesState } from "../context/articles/context";
 import { Article } from "../context/articles/reducer";
 // import { Link } from "react-router-dom";
 import "../index.css";

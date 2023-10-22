@@ -4,9 +4,7 @@ import Notfound from "../NotFound";
 import Logout from "../logout";
 import Signin from "../signin";
 import Signup from "../signup";
-import ProtectedRoute from "./ProtectedRoute";
 import AccountLayout from "../layouts/account";
-import ArticleContainer from "../atricles/ArticleContainer";
 import ArticalDetails from "../atricles/ArticleDetails";
 
 const router = createBrowserRouter([
