@@ -1,8 +1,8 @@
 import React from "react";
-import ProjectListItems from "./MatchListItems";
+import MatchListItems from "./MatchListItems";
 import { Switch } from "@headlessui/react";
 
-const ProjectList: React.FC = () => {
+const MatchList: React.FC = () => {
   const [LiveScores, setLiveScores] = React.useState(true);
   const toggleLive = () => {
     setLiveScores(!LiveScores);
@@ -27,13 +27,10 @@ const ProjectList: React.FC = () => {
         </Switch>
       </div>
       <div className="flex">
-        <ProjectListItems
-          liveScores={LiveScores}
-          setLiveScores={setLiveScores}
-        />
+        <MatchListItems liveScores={LiveScores} setLiveScores={setLiveScores} />
       </div>
     </>
   );
 };
 
-export default ProjectList;
+export default MatchList;

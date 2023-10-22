@@ -10,7 +10,7 @@ import React from "react";
 import RefreshIcon from "../assets/images/refresh.svg";
 import { fetchMatch } from "../context/matches/actions";
 
-export default function ProjectListItems(props: {
+export default function MatchListItems(props: {
   liveScores: boolean;
   setLiveScores: (state: boolean) => void;
 }) {
