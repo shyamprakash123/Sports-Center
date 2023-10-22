@@ -140,18 +140,26 @@ export default function MatchListItems(props: {
                       <p className="text-sm w-56">{formattedDate}</p>
                     </div>
                     <div>
-                      <div
-                        className={`flex justify-center leading-loose  ${
-                          props.liveScores === true
-                            ? "bg-green-500"
-                            : "bg-red-500"
-                        }  text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider`}
-                      >
-                        Live Now
+                      <div>
+                        <span className="relative inline-flex">
+                          <div
+                            className={`flex justify-center leading-loose   ${
+                              props.liveScores === true
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }  text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider`}
+                          >
+                            Live Now
+                          </div>
+                          <span className="flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                          </span>
+                        </span>
                       </div>
                       <button
                         type="button"
-                        className={`justify-center inline-flex items-center px-2 py-1.5 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 mt-1 ${
+                        className={`justify-center inline-flex items-center px-1.5 py-1 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 mt-1 ${
                           Refresh != null && Refresh === match.id
                             ? "cursor-not-allowed"
                             : ""

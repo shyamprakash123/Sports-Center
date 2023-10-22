@@ -31,7 +31,6 @@ export default function ArticleListItems() {
   let state: any = useArticlesState();
   const [sportsList, setSportsList] = React.useState<any>(null);
   const [currentSport, setSport] = React.useState<any>(null);
-  // const ArticleDispatch = useArticlesDispatch();
 
   useEffect(() => {
     fetchSports(setSportsList);

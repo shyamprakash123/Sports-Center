@@ -6,6 +6,7 @@ import Signin from "../signin";
 import Signup from "../signup";
 import AccountLayout from "../layouts/account";
 import ArticalDetails from "../atricles/ArticleDetails";
+import Preferences from "../Preferences/Preferences";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/home" replace /> },
@@ -29,7 +30,6 @@ const router = createBrowserRouter([
     path: "/notfound",
     element: <Notfound />,
   },
-  //Protected Routes
   {
     path: "home",
     element: <AccountLayout />,
@@ -38,36 +38,16 @@ const router = createBrowserRouter([
       {
         path: "article/:articleID",
         element: <ArticalDetails />,
-        children: [
-          { index: true, element: <Notfound /> },
-          {
-            path: ":projectID",
-            element: <Notfound />,
-            children: [
-              { index: true, element: <></> },
-              {
-                path: "tasks",
-                children: [
-                  { index: true, element: <Navigate to="../" /> },
-                  {
-                    path: "new",
-                    element: <Notfound />,
-                  },
-                  {
-                    path: ":taskID",
-                    children: [{ index: true, element: <Notfound /> }],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
       },
       {
-        path: "members",
-        element: <Notfound />,
+        path: "preferences",
+        element: <Preferences />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <Notfound />,
   },
 ]);
 
