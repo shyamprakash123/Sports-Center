@@ -4,10 +4,10 @@ import { fetchMatches } from "../context/matches/actions";
 import { Outlet } from "react-router-dom";
 
 const MatchContainer = () => {
-  const projectDispatch = useMatchesDispatch();
+  const matchDispatch = useMatchesDispatch();
   useEffect(() => {
-    fetchMatches(projectDispatch);
-  }, [projectDispatch]);
+    fetchMatches(matchDispatch);
+  }, [matchDispatch]);
   return <Outlet />;
 };
 

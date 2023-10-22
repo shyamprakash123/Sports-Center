@@ -3,11 +3,11 @@ import { Navigate } from "react-router-dom";
 
 const Logout = () => {
   useEffect(() => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userData");
+    localStorage.removeItem("authTokenSportsCenter");
+    localStorage.removeItem("userDataSportsCenter");
   }, []);
 
-  return <Navigate to="/signin" />;
+  return <Navigate to="/home" />;
 };
 
 export default Logout;

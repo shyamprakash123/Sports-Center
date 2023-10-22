@@ -4,12 +4,17 @@ import { useEffect } from "react";
 import { useMatchesDispatch } from "../../context/matches/context";
 import { fetchMatches } from "../../context/matches/actions";
 import Matches from "../../matches";
+import Articles from "../../atricles";
+import { fetchArticles } from "../../context/articles/actions";
+import { useArticlesDispatch } from "../../context/articles/context";
 
 const AccountLayout = () => {
   const projectDispatch = useMatchesDispatch();
+  const ArticleDispatch = useArticlesDispatch();
   useEffect(() => {
     fetchMatches(projectDispatch);
-  }, [projectDispatch]);
+    fetchArticles(ArticleDispatch);
+  }, [projectDispatch, ArticleDispatch]);
 
   return (
     <>
@@ -17,6 +22,7 @@ const AccountLayout = () => {
       <main>
         <div className="mx-auto max-w-10xl py-6 sm:px-2 ">
           <Matches />
+          <Articles />
           <Outlet />
         </div>
       </main>

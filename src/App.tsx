@@ -3,17 +3,16 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes";
 import { ThemeContext } from "./context/theme";
 import { MatchesProvider } from "./context/matches/context";
+import { ArticlesProvider } from "./context/articles/context";
 
 function App() {
   const { theme } = useContext(ThemeContext);
   return (
-    <div
-      className={`h-screen w-full mx-auto py-2 ${
-        theme === "dark" ? "dark" : ""
-      }`}
-    >
+    <div className={` ${theme === "dark" ? "dark" : ""}`}>
       <MatchesProvider>
-        <RouterProvider router={router} />
+        <ArticlesProvider>
+          <RouterProvider router={router} />
+        </ArticlesProvider>
       </MatchesProvider>
     </div>
   );

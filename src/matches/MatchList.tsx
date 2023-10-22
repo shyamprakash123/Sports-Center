@@ -11,7 +11,7 @@ const ProjectList: React.FC = () => {
     <>
       <div className="flex items-center">
         <h2 className="text-2xl font-medium tracking-tight mb-2 mr-4">
-          Live Scores
+          Live Games
         </h2>
         <Switch
           checked={LiveScores}

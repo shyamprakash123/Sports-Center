@@ -36,3 +36,26 @@ export const fetchMatches = async (dispatch: any) => {
     });
   }
 };
+
+export const fetchMatch = async (
+  dispatch: any,
+  matchId: number,
+  setRefresh: (id: number | null) => void
+) => {
+  const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+
+  try {
+    const response = await fetch(`${API_ENDPOINT}/matches/${matchId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    dispatch({ type: "UPDATE_MATCHES_SUCCESS", payload: data });
+    setRefresh(null);
+  } catch (error) {
+    console.log("Error fetching matches:", error);
+  }
+};

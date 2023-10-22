@@ -13,6 +13,7 @@ export interface MatchesState {
 export type MatchesActions =
   | { type: "FETCH_MATCHES_REQUEST" }
   | { type: "FETCH_MATCHES_SUCCESS"; payload: Match[] }
+  | { type: "UPDATE_MATCHES_SUCCESS"; payload: Match }
   | { type: "FETCH_MATCHES_FAILURE"; payload: string };
 
 export const initialState: MatchesState = {
@@ -37,6 +38,14 @@ export const reducer = (
         ...state,
         isLoading: false,
         matches: action.payload,
+      };
+    case "UPDATE_MATCHES_SUCCESS":
+      return {
+        ...state,
+        isLoading: false,
+        matches: state.matches.map((match) =>
+          match.id === action.payload.id ? action.payload : match
+        ),
       };
     case "FETCH_MATCHES_FAILURE":
       return {

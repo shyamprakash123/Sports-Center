@@ -6,6 +6,8 @@ import Signin from "../signin";
 import Signup from "../signup";
 import ProtectedRoute from "./ProtectedRoute";
 import AccountLayout from "../layouts/account";
+import ArticleContainer from "../atricles/ArticleContainer";
+import ArticalDetails from "../atricles/ArticleDetails";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/home" replace /> },
@@ -32,16 +34,12 @@ const router = createBrowserRouter([
   //Protected Routes
   {
     path: "home",
-    element: (
-      <ProtectedRoute>
-        <AccountLayout />
-      </ProtectedRoute>
-    ),
+    element: <AccountLayout />,
     children: [
       { index: true, element: <Navigate to="/home" replace /> },
       {
-        path: "projects",
-        element: <Notfound />,
+        path: "article/:articleID",
+        element: <ArticalDetails />,
         children: [
           { index: true, element: <Notfound /> },
           {

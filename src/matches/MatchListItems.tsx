@@ -1,16 +1,23 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMatchesState } from "../context/matches/context";
-import { Link } from "react-router-dom";
+import {
+  useMatchesDispatch,
+  useMatchesState,
+} from "../context/matches/context";
+// import { Link } from "react-router-dom";
 import "../index.css";
+import React from "react";
+import RefreshIcon from "../assets/images/refresh.svg";
+import { fetchMatch } from "../context/matches/actions";
 
 export default function ProjectListItems(props: {
   liveScores: boolean;
   setLiveScores: (state: boolean) => void;
 }) {
+  const [Refresh, setRefresh] = React.useState<null | number>(null);
   let state: any = useMatchesState();
+  const matchDispatch = useMatchesDispatch();
   const { matches, isLoading, isError, errorMessage } = state;
-  console.log(matches);
 
   if (matches.length === 0 && isLoading) {
     return <span>Loading...</span>;
@@ -37,8 +44,6 @@ export default function ProjectListItems(props: {
             const firstTeamScore = match.score[firstTeamName];
             const secondTeamName = entries[1];
             const secondTeamScore = match.score[secondTeamName];
-
-            console.log(firstTeamName, firstTeamScore);
             const daysOfWeek = [
               "Sunday",
               "Monday",
@@ -102,9 +107,9 @@ export default function ProjectListItems(props: {
               }
             }
             return (
-              <Link
+              <div
                 key={match.id}
-                to={`${match.id}`}
+                // to={`${match.id}`}
                 className="block p-2  border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
               >
                 <div className="text-gray-600 my-3 text-center">
@@ -134,14 +139,56 @@ export default function ProjectListItems(props: {
                       <p className="text-xs w-56">{match.location}</p>
                       <p className="text-sm w-56">{formattedDate}</p>
                     </div>
-                    <div
-                      className={`leading-loose ${
-                        props.liveScores === true
-                          ? "bg-green-500"
-                          : "bg-red-500"
-                      }  text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider`}
-                    >
-                      Live Now
+                    <div>
+                      <div
+                        className={`flex justify-center leading-loose  ${
+                          props.liveScores === true
+                            ? "bg-green-500"
+                            : "bg-red-500"
+                        }  text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider`}
+                      >
+                        Live Now
+                      </div>
+                      <button
+                        type="button"
+                        className={`justify-center inline-flex items-center px-2 py-1.5 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 mt-1 ${
+                          Refresh != null && Refresh === match.id
+                            ? "cursor-not-allowed"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setRefresh(match.id);
+                          fetchMatch(matchDispatch, match.id, setRefresh);
+                        }}
+                      >
+                        {Refresh != null && Refresh === match.id ? (
+                          <svg
+                            className="animate-spin -ml-1 mr-1 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        ) : (
+                          <img src={RefreshIcon} className="h-5 w-5 mr-1" />
+                        )}
+                        {Refresh != null && Refresh === match.id
+                          ? "Loading"
+                          : "Refresh"}
+                      </button>
                     </div>
                   </div>
                   <div className="flex justify-between items-center p-4 border-t border-gray-300 ">
@@ -166,7 +213,7 @@ export default function ProjectListItems(props: {
                 <div className="text-gray-600 my-3 text-center">
                   <i className="fas fa-ellipsis-v"></i>
                 </div>
-              </Link>
+              </div>
             );
           })}
       </ul>
