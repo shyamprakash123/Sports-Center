@@ -4,7 +4,6 @@ import { Disclosure, Menu, Switch, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Logo from "../../assets/images/logo.jpg";
 import SettingIcon from "../../assets/images/setting.svg";
-// import { useLocation } from "react-router-dom";
 import { ThemeContext } from "../../context/theme";
 import { Link } from "react-router-dom";
 
@@ -21,7 +20,7 @@ const getMenuOptions = () => {
       : { name: "Sign out", href: "/logout" },
     localStorage.getItem("authTokenSportsCenter") === null
       ? null
-      : { name: "Profile", href: "#" },
+      : { name: "Change Password", href: "/home/changepassword" },
   ];
 
   return userNavigation;
@@ -135,7 +134,7 @@ const Appbar = () => {
                     }
                   </h2>
                 ) : null}
-                <Menu as="div" className="relative ml-3">
+                <Menu as="div" className="relative ml-3 mr-5">
                   <div>
                     <Menu.Button className="rounded-full bg-white p-1 text-gray-400 hover:text-blue-600">
                       <UserCircleIcon className="h-6 w-6" aria-hidden="true" />
@@ -156,15 +155,15 @@ const Appbar = () => {
                         .map((item) => (
                           <Menu.Item key={item?.name}>
                             {({ active }) => (
-                              <a
-                                href={item?.href}
+                              <Link
+                                to={`${item?.href}`}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
                                 {item?.name}
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                         ))}

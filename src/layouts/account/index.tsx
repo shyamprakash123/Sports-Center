@@ -7,6 +7,7 @@ import Matches from "../../matches";
 import Articles from "../../atricles";
 import { fetchArticles } from "../../context/articles/actions";
 import { useArticlesDispatch } from "../../context/articles/context";
+import { Toaster } from "react-hot-toast";
 
 const AccountLayout = () => {
   const projectDispatch = useMatchesDispatch();
@@ -23,6 +24,7 @@ const AccountLayout = () => {
         <div className="mx-auto max-w-10xl py-6 sm:px-2 ">
           <Matches />
           <Articles />
+          <Toaster />
           <Outlet />
         </div>
       </main>
