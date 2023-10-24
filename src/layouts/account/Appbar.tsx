@@ -67,14 +67,17 @@ const Appbar = () => {
 
   return (
     <>
-      <Disclosure as="nav" className="border-b border-slate-200">
-        <div className="mx-auto max-w-10xl px-4 sm:px-6 lg:px-8">
+      <Disclosure
+        as="nav"
+        className="border-b border-slate-200 bg-green-300 dark:bg-gray-700"
+      >
+        <div className="mx-auto max-w-10xl px-4 sm:px-6 lg:px-0">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <img className="h-16" src={Logo} alt="Sports Center" />
               </div>
-              <h1 className="text-3xl font-semibold text-center pl-4">
+              <h1 className="text-3xl font-semibold text-center pl-4 text-gray-700 dark:text-white">
                 Sports Center
               </h1>
               {/* <div className="hidden md:block">

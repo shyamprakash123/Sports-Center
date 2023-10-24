@@ -6,6 +6,8 @@ import { Fragment, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "../../src/config/constants";
 import closeIcon from "../assets/images/close.svg";
+import { useContext } from "react";
+import { ThemeContext } from "../context/theme";
 
 const fetchArticle = async (
   articleID: number,
@@ -37,6 +39,8 @@ const ArticalDetails = () => {
   const [article, setArticle] = useState<any>(null);
 
   const [isLoading, setloading] = useState<boolean>(false);
+
+  const { theme } = useContext(ThemeContext);
 
   let { articleID } = useParams();
   let navigate = useNavigate();
@@ -101,7 +105,11 @@ const ArticalDetails = () => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog
+          as="div"
+          className={`relative z-100 ${theme ?? ""}`}
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -132,7 +140,7 @@ const ArticalDetails = () => {
                     <>
                       <Dialog.Title
                         as="h3"
-                        className="flex font-bold justify-between text-lg  leading-6 text-gray-900 items-center"
+                        className="flex font-bold justify-between text-lg  leading-6 text-gray-900 items-center dark:text-white"
                       >
                         {article?.title}
                         <img

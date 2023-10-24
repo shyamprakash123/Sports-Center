@@ -7,6 +7,7 @@ import Signup from "../signup";
 import AccountLayout from "../layouts/account";
 import ArticalDetails from "../atricles/ArticleDetails";
 import Preferences from "../Preferences/Preferences";
+import MatchDetails from "../matches/MatchDetails";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/home" replace /> },
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "article/:articleID",
         element: <ArticalDetails />,
+      },
+      {
+        path: "matches/:matchID",
+        element: <MatchDetails />,
       },
       {
         path: "preferences",

@@ -10,7 +10,7 @@ const MatchList: React.FC = () => {
   return (
     <>
       <div className="flex items-center">
-        <h2 className="text-2xl font-medium tracking-tight mb-2 mr-4">
+        <h2 className="text-2xl font-medium tracking-tight mb-2 mr-4  text-gray-700 dark:text-white">
           Live Games
         </h2>
         <Switch

@@ -9,6 +9,7 @@ import "../index.css";
 import { useState } from "react";
 import RefreshIcon from "../assets/images/refresh.svg";
 import { fetchMatch } from "../context/matches/actions";
+import { Link } from "react-router-dom";
 
 const checkLogin = () => {
   return localStorage.getItem("authTokenSportsCenter") !== null;
@@ -127,7 +128,6 @@ export default function MatchListItems(props: {
               return (
                 <div
                   key={match.id}
-                  // to={`${match.id}`}
                   className="block p-2  border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                 >
                   <div className="text-gray-600 my-3 text-center">
@@ -143,25 +143,62 @@ export default function MatchListItems(props: {
                         )})`,
                       }}
                     ></div>
-                    <div className="px-4 pb-3 pt-4 border-b border-gray-300  flex justify-between">
-                      <div className="text-xs uppercase font-bold  tracking-wide">
+                    <div className="px-4 pb-3 pt-4 border-b border-gray-300  flex justify-between items-center">
+                      <div className="text-xs uppercase font-bold  tracking-wide  text-gray-700 dark:text-white">
                         Match Duration:{" "}
                         <span className="font-normal">{hours} hrs</span>
                       </div>
+                      <Link
+                        to={`/home/matches/${match.id}`}
+                        className="inline-block border  rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
+                      >
+                        View Match
+                      </Link>
                     </div>
                     <div className="p-4  flex justify-between items-start">
                       <div>
-                        <p className="text-3xl  leading-none my-1">
+                        <p className="text-3xl  leading-none my-1  text-gray-700 dark:text-white text-bold">
                           {match.sportName}
                         </p>
-                        <p className="text-xs w-56">{match.location}</p>
-                        <p className="text-sm w-56">{formattedDate}</p>
+                        <p className="flex text-xs w-56 items-center text-gray-700 dark:text-white text-bold">
+                          <span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              id="location-pin-alt"
+                              className="h-6 w-6"
+                            >
+                              <path
+                                fill="#5460AB"
+                                d="M12,10.8a2,2,0,1,0-2-2A2,2,0,0,0,12,10.8Zm-.71,6.91a1,1,0,0,0,1.42,0l4.09-4.1a6.79,6.79,0,1,0-9.6,0ZM7.23,8.34A4.81,4.81,0,0,1,9.36,4.79a4.81,4.81,0,0,1,5.28,0,4.82,4.82,0,0,1,.75,7.41L12,15.59,8.61,12.2A4.77,4.77,0,0,1,7.23,8.34ZM19,20H5a1,1,0,0,0,0,2H19a1,1,0,0,0,0-2Z"
+                              ></path>
+                            </svg>
+                          </span>
+                          {match.location}
+                        </p>
+                        <p className="flex text-xs w-56 items-center text-gray-700 dark:text-white text-bold">
+                          <span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              enableBackground="new 0 0 24 24"
+                              viewBox="0 0 24 24"
+                              id="schedule"
+                              className="h-6 w-6"
+                            >
+                              <path
+                                fill="#5460AB"
+                                d="M19,4h-1V3c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H8V3c0-0.6-0.4-1-1-1S6,2.4,6,3v1H5C3.3,4,2,5.3,2,7v1h20V7C22,5.3,20.7,4,19,4z M2,19c0,1.7,1.3,3,3,3h14c1.7,0,3-1.3,3-3v-9H2V19z M17,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,12,17,12z M17,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S16.4,16,17,16z M12,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,12,12,12z M12,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,16,12,16z M7,12c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,12,7,12z M7,16c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S6.4,16,7,16z"
+                              ></path>
+                            </svg>
+                          </span>
+                          {formattedDate}
+                        </p>
                       </div>
                       <div>
                         <div>
-                          <span className="relative inline-flex">
+                          <span className="relative">
                             <div
-                              className={`flex justify-center leading-loose   ${
+                              className={`flex justify-center leading-loose text-bold  ${
                                 props.liveScores === true
                                   ? "bg-green-500"
                                   : "bg-red-500"
@@ -218,7 +255,7 @@ export default function MatchListItems(props: {
                       </div>
                     </div>
                     <div className="flex justify-between items-center p-4 border-t border-gray-300 ">
-                      <div className="text-sm pr-1 font-semibold">
+                      <div className="text-sm pr-1 font-semibold text-gray-700 dark:text-white text-bold">
                         {firstTeamName}
                       </div>
                       <div className="leading-loose bg-blue-500 text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider mr-2 ml-2">
@@ -230,7 +267,7 @@ export default function MatchListItems(props: {
                       <div className="leading-loose bg-blue-500 text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider mr-2 ml-2">
                         {secondTeamScore}
                       </div>
-                      <span className="text-sm font-semibold">
+                      <span className="text-sm font-semibold text-gray-700 dark:text-white text-bold">
                         {secondTeamName}
                       </span>
                     </div>
