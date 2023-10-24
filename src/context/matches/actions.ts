@@ -29,10 +29,9 @@ export const fetchMatches = async (dispatch: any) => {
         }
       );
       preferences = await responsePreference.json();
-    }
-
-    if (response.status === 401) {
-      window.location.href = "/logout";
+      if (responsePreference.status === 401) {
+        window.location.href = "/logout";
+      }
     }
 
     const data = await response.json();

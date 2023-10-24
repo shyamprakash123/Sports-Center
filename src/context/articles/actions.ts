@@ -30,7 +30,11 @@ export const fetchArticles = async (dispatch: any) => {
         }
       );
       preferences = await responsePreference.json();
+      if (responsePreference.status === 401) {
+        window.location.href = "/logout";
+      }
     }
+
     const data = await response.json();
     dispatch({
       type: "FETCH_ARTICLES_SUCCESS",
