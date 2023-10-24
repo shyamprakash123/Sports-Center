@@ -157,7 +157,7 @@ export default function MatchListItems(props: {
                     </div>
                     <div className="p-4  flex justify-between items-start">
                       <div>
-                        <p className="text-3xl  leading-none my-1  text-gray-700 dark:text-white text-bold">
+                        <p className="text-3xl uppercase leading-none my-1  text-sky-700 dark:text-white text-bold">
                           {match.sportName}
                         </p>
                         <p className="flex text-xs w-56 items-center text-gray-700 dark:text-white text-bold">

@@ -191,7 +191,7 @@ export default function ArticleListItems() {
                     <div className="flex flex-1">
                       <div className="flex flex-col flex-1 px-6 py-4 ">
                         <div className="flex flex-col">
-                          <div className="flex items-center font-bold text-2xl mb-2 text-gray-700 dark:text-white justify-between">
+                          <div className="flex items-center uppercase font-semibold text-xl mb-2 text-orange-500 dark:text-white justify-between">
                             {article.sport.name}
                             <span>
                               <p className=" text-sm text-gray-500 dark:text-gray-300">

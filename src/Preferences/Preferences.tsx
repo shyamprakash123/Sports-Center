@@ -10,6 +10,8 @@ import { fetchMatches } from "../context/matches/actions";
 import { useArticlesDispatch } from "../context/articles/context";
 import { useMatchesDispatch } from "../context/matches/context";
 import { fetchArticles } from "../context/articles/actions";
+import { useContext } from "react";
+import { ThemeContext } from "../context/theme";
 
 const fetchPreferences = async (
   setPreferences: (data: any) => void,
@@ -81,6 +83,7 @@ const Preferences = () => {
   let [isOpen, setIsOpen] = useState(true);
   const matchDispatch = useMatchesDispatch();
   const articleDispatch = useArticlesDispatch();
+  const { theme } = useContext(ThemeContext);
 
   const [preferences, setPreferences] = useState<any>({
     sports: [],
@@ -129,7 +132,11 @@ const Preferences = () => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog
+          as="div"
+          className={`relative z-100 ${theme ?? ""}`}
+          onClose={closeModal}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -153,14 +160,14 @@ const Preferences = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 bg-white p-6 text-left align-middle shadow-xl transition-all">
                   {isLoading === true ? (
                     <span>Loading...</span>
                   ) : (
                     <>
                       <Dialog.Title
                         as="h3"
-                        className="flex font-bold justify-between text-2xl  leading-6 text-gray-900 items-center"
+                        className="flex font-bold justify-between text-2xl  leading-6 text-gray-900 dark:text-white items-center"
                       >
                         Preferences
                         <img
@@ -174,7 +181,7 @@ const Preferences = () => {
                         <h2 className="text-gray-800 font-bold dark:text-white text-xl  tracking-tight mb-2 mr-4">
                           Favourite Sports
                         </h2>
-                        <div className="flex items-center justify-between flex-wrap gap-3">
+                        <div className="items-center justify-between grid grid-cols-4 gap-4">
                           {sports?.map((sport: any) => {
                             return (
                               <div
@@ -207,7 +214,7 @@ const Preferences = () => {
                         <h2 className="text-gray-800 font-bold  dark:text-white text-xl  tracking-tight mb-2 mr-4">
                           Favourite Teams
                         </h2>
-                        <div className="flex items-center flex-wrap gap-3">
+                        <div className="items-center justify-between grid grid-cols-4 gap-4">
                           {teams?.map((team: any) => {
                             return (
                               <div
