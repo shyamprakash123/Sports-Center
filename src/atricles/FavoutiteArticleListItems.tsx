@@ -73,14 +73,21 @@ export default function FavouriteArticleListItems() {
           team === null) &&
         (article.sport.name === sport || sport === null) &&
         ((checkLogin() &&
-          (preferences.sports.includes(article.sport.name) ||
-            preferences.sports.length === 0) &&
-          (preferences.sports.includes(article.sport.name) ||
-            preferences.sports.length === 0) &&
-          (article.teams.filter((item: any) =>
-            preferences.teams.includes(item.name)
-          ).length > 0 ||
-            preferences.teams.length === 0)) ||
+          (preferences.sports === undefined ||
+            preferences.sports.length === 0 ||
+            ((preferences.sports?.includes(article.sport.name) ||
+              preferences.sports?.length === 0) &&
+              (preferences.sports?.includes(article.sport.name) ||
+                preferences.sports?.length === 0) &&
+              (article.teams.filter((item: any) =>
+                preferences.teams?.includes(item.name)
+              ).length > 0 ||
+                data?.filter(
+                  (item: any) =>
+                    item.plays === article.sport.name &&
+                    preferences.teams?.includes(item.name)
+                ).length === 0 ||
+                preferences.teams?.length === 0)))) ||
           checkLogin() === false)
     );
     return arti;
@@ -117,8 +124,10 @@ export default function FavouriteArticleListItems() {
             ?.filter(
               (sport: any) =>
                 (checkLogin() &&
-                  (preferences.sports.includes(sport.name) ||
-                    preferences.sports.length === 0)) ||
+                  (preferences.sports === undefined ||
+                    preferences.sports.length === 0 ||
+                    preferences.sports?.includes(sport.name) ||
+                    preferences.sports?.length === 0)) ||
                 checkLogin() === false
             )
             .map((item: any) => {
@@ -148,8 +157,15 @@ export default function FavouriteArticleListItems() {
                   (item: any) =>
                     item.plays === sport &&
                     ((checkLogin() &&
-                      (preferences.teams.includes(item.name) ||
-                        preferences.teams.length === 0)) ||
+                      (preferences.sports === undefined ||
+                        preferences.sports.length === 0 ||
+                        preferences.teams?.includes(item.name) ||
+                        data.filter(
+                          (item: any) =>
+                            item.plays === sport &&
+                            preferences.teams?.includes(item.name)
+                        ).length === 0 ||
+                        preferences.teams?.length === 0)) ||
                       checkLogin() === false)
                 )
                 ?.map((item: any) => {

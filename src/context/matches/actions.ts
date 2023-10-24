@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_ENDPOINT } from "../../config/constants";
-
 const checkLogin = () => {
   return localStorage.getItem("authTokenSportsCenter") !== null;
 };
@@ -30,6 +29,10 @@ export const fetchMatches = async (dispatch: any) => {
         }
       );
       preferences = await responsePreference.json();
+    }
+
+    if (response.status === 401) {
+      window.location.href = "/logout";
     }
 
     const data = await response.json();

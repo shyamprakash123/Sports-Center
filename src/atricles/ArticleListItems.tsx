@@ -13,7 +13,10 @@ const checkLogin = () => {
   return localStorage.getItem("authTokenSportsCenter") !== null;
 };
 
-const fetchSports = async (setSportsList: (data: any) => void) => {
+const fetchSports = async (
+  setSportsList: (data: any) => void,
+  setData: (data: any) => void
+) => {
   const token = localStorage.getItem("authTokenSportsCenter") ?? "";
 
   try {
@@ -26,6 +29,15 @@ const fetchSports = async (setSportsList: (data: any) => void) => {
     });
     const sportsData = await responseSports.json();
     setSportsList(sportsData.sports);
+    const responseData = await fetch(`${API_ENDPOINT}/teams`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await responseData.json();
+    setData(data);
   } catch (error) {
     console.log("Error fetching sports:", error);
   }
@@ -35,9 +47,10 @@ export default function ArticleListItems() {
   let state: any = useArticlesState();
   const [sportsList, setSportsList] = React.useState<any>(null);
   const [currentSport, setSport] = React.useState<any>(null);
+  const [data, setData] = React.useState<any>(null);
 
   useEffect(() => {
-    fetchSports(setSportsList);
+    fetchSports(setSportsList, setData);
   }, []);
   const { articles, isLoading, isError, errorMessage, preferences } = state;
 
@@ -54,14 +67,21 @@ export default function ArticleListItems() {
       (article: any) =>
         (currentSport === article.sport.name || currentSport === null) &&
         ((checkLogin() &&
-          (preferences.sports.includes(article.sport.name) ||
-            preferences.sports.length === 0) &&
-          (preferences.sports.includes(article.sport.name) ||
-            preferences.sports.length === 0) &&
-          (article.teams.filter((item: any) =>
-            preferences.teams.includes(item.name)
-          ).length > 0 ||
-            preferences.teams.length === 0)) ||
+          (preferences.sports === undefined ||
+            preferences.sports.length === 0 ||
+            ((preferences.sports?.includes(article.sport.name) ||
+              preferences.sports?.length === 0) &&
+              (preferences.sports?.includes(article.sport.name) ||
+                preferences.sports?.length === 0) &&
+              (article.teams.filter((item: any) =>
+                preferences.teams?.includes(item.name)
+              ).length > 0 ||
+                data?.filter(
+                  (item: any) =>
+                    item.plays === article.sport.name &&
+                    preferences.teams?.includes(item.name)
+                ).length === 0 ||
+                preferences.teams?.length === 0)))) ||
           checkLogin() === false)
     );
     return arti;
@@ -79,14 +99,16 @@ export default function ArticleListItems() {
           } hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full mr-2`}
           onClick={() => setSport(null)}
         >
-          {"Trending"}
+          {"Your News"}
         </button>
         {sportsList
           ?.filter(
             (sport: any) =>
               (checkLogin() &&
-                (preferences.sports.includes(sport.name) ||
-                  preferences.sports.length === 0)) ||
+                (preferences.sports === undefined ||
+                  preferences.sports.length === 0 ||
+                  preferences.sports?.includes(sport.name) ||
+                  preferences.sports?.length === 0)) ||
               checkLogin() === false
           )
           .map((sport: any) => {

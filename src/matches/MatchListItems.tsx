@@ -36,8 +36,10 @@ export default function MatchListItems(props: {
       (match: any) =>
         match.isRunning === props.liveScores &&
         ((checkLogin() &&
-          (preferences.sports.includes(match.sportName) ||
-            preferences.sports.length === 0)) ||
+          (preferences.sports === undefined ||
+            preferences.sports.length === 0 ||
+            preferences.sports?.includes(match.sportName) ||
+            preferences.sports?.length === 0)) ||
           checkLogin() === false)
     );
   };
@@ -183,7 +185,6 @@ export default function MatchListItems(props: {
                           onClick={() => {
                             setRefresh(match.id);
                             fetchMatch(matchDispatch, match.id, setRefresh);
-                            console.log(preferences);
                           }}
                         >
                           {Refresh != null && Refresh === match.id ? (

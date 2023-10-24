@@ -47,7 +47,10 @@ const fetchPreferences = async (
     const data = await responseData.json();
     setTeams(data);
     const preferences = await response.json();
-    setPreferences(preferences.preferences);
+    preferences.preferences.sports === undefined
+      ? null
+      : setPreferences(preferences.preferences);
+
     setloading(false);
   } catch (error) {
     console.log("Error fetching preferences:", error);
@@ -79,7 +82,10 @@ const Preferences = () => {
   const matchDispatch = useMatchesDispatch();
   const articleDispatch = useArticlesDispatch();
 
-  const [preferences, setPreferences] = useState<any>(null);
+  const [preferences, setPreferences] = useState<any>({
+    sports: [],
+    teams: [],
+  });
   const [sports, setSports] = useState<any>(null);
   const [teams, setTeams] = useState<any>(null);
 
@@ -102,7 +108,6 @@ const Preferences = () => {
     } else {
       newSports.push(name);
     }
-    console.log({ ...preferences, sports: newSports });
     setPreferences({ ...preferences, sports: newSports });
   };
 
@@ -114,7 +119,6 @@ const Preferences = () => {
     } else {
       newTeams.push(name);
     }
-    console.log({ ...preferences, teams: newTeams });
     setPreferences({ ...preferences, teams: newTeams });
   };
 
