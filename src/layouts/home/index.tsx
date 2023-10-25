@@ -13,7 +13,6 @@ const HomeLayout = () => {
   const projectDispatch = useMatchesDispatch();
   const ArticleDispatch = useArticlesDispatch();
   useEffect(() => {
-    console.log("fetching matches");
     fetchMatches(projectDispatch);
     fetchArticles(ArticleDispatch);
   }, [projectDispatch, ArticleDispatch]);
