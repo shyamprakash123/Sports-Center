@@ -80,25 +80,26 @@ const Appbar = () => {
               </h1>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
-                  {navigation.map((item) => {
-                    const isCurrent = pathname.includes(item.href);
+                  {isLogedin &&
+                    navigation.map((item) => {
+                      const isCurrent = pathname.includes(item.href);
 
-                    return (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          isCurrent
-                            ? "bg-slate-50 text-blue-700"
-                            : "text-slate-500 hover:text-blue-600",
-                          "rounded-md px-3 py-2 text-sm font-medium bg-green-500 text-white"
-                        )}
-                        aria-current={isCurrent ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    );
-                  })}
+                      return (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            isCurrent
+                              ? "bg-slate-50 text-blue-700"
+                              : "text-slate-500 hover:text-blue-600",
+                            "rounded-md px-3 py-2 text-sm font-medium bg-green-500 text-white"
+                          )}
+                          aria-current={isCurrent ? "page" : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      );
+                    })}
                 </div>
               </div>
             </div>
