@@ -37,8 +37,8 @@ export default function MatchListItems(props: {
       props?.favouriteMatches === undefined
         ? match.isRunning === props?.liveScores &&
           ((checkLogin() &&
-            (preferences.sports === undefined ||
-              preferences.sports.length === 0 ||
+            (preferences?.sports === undefined ||
+              preferences?.sports.length === 0 ||
               preferences.sports?.includes(match.sportName) ||
               preferences.sports?.length === 0)) ||
             checkLogin() === false)

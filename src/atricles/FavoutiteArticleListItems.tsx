@@ -69,8 +69,8 @@ export default function FavouriteArticleListItems() {
           team === null) &&
         (article.sport.name === sport || sport === null) &&
         ((checkLogin() &&
-          (preferences.sports === undefined ||
-            preferences.sports.length === 0 ||
+          (preferences?.sports === undefined ||
+            preferences?.sports.length === 0 ||
             ((preferences.sports?.includes(article.sport.name) ||
               preferences.sports?.length === 0) &&
               (preferences.sports?.includes(article.sport.name) ||
@@ -120,8 +120,8 @@ export default function FavouriteArticleListItems() {
             ?.filter(
               (sport: any) =>
                 (checkLogin() &&
-                  (preferences.sports === undefined ||
-                    preferences.sports.length === 0 ||
+                  (preferences?.sports === undefined ||
+                    preferences?.sports.length === 0 ||
                     preferences.sports?.includes(sport.name) ||
                     preferences.sports?.length === 0)) ||
                 checkLogin() === false

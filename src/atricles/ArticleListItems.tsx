@@ -67,8 +67,8 @@ export default function ArticleListItems(props: {
       props.favouriteArticles === undefined
         ? (currentSport === article.sport.name || currentSport === null) &&
           ((checkLogin() &&
-            (preferences.sports === undefined ||
-              preferences.sports.length === 0 ||
+            (preferences?.sports === undefined ||
+              preferences?.sports.length === 0 ||
               ((preferences.sports?.includes(article.sport.name) ||
                 preferences.sports?.length === 0) &&
                 (preferences.sports?.includes(article.sport.name) ||
@@ -108,8 +108,8 @@ export default function ArticleListItems(props: {
           ?.filter((sport: any) =>
             props.favouriteArticles === undefined
               ? (checkLogin() &&
-                  (preferences.sports === undefined ||
-                    preferences.sports.length === 0 ||
+                  (preferences?.sports === undefined ||
+                    preferences?.sports.length === 0 ||
                     preferences.sports?.includes(sport.name) ||
                     preferences.sports?.length === 0)) ||
                 checkLogin() === false
