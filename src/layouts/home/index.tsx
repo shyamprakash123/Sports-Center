@@ -9,7 +9,7 @@ import { fetchArticles } from "../../context/articles/actions";
 import { useArticlesDispatch } from "../../context/articles/context";
 import { Toaster } from "react-hot-toast";
 
-const AccountLayout = () => {
+const HomeLayout = () => {
   const projectDispatch = useMatchesDispatch();
   const ArticleDispatch = useArticlesDispatch();
   useEffect(() => {
@@ -32,4 +32,4 @@ const AccountLayout = () => {
   );
 };
 
-export default AccountLayout;
+export default HomeLayout;

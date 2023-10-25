@@ -8,6 +8,58 @@ import { API_ENDPOINT } from "../config/constants";
 import closeIcon from "../assets/images/close.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../context/theme";
+import {
+  errorNotification,
+  successNotification,
+} from "../Notification/Notification";
+
+const fetchPreferences = async (setPreferences: (data: any) => void) => {
+  const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+
+  try {
+    const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const preferences = await response.json();
+    Object.keys(preferences.preferences).length === 0
+      ? null
+      : setPreferences(preferences.preferences);
+  } catch (error) {
+    console.log("Error fetching preferences:", error);
+  }
+};
+
+const updatePreferences = async (preferences: any, save: boolean) => {
+  const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+
+  try {
+    const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ preferences: preferences }),
+    });
+    if (response.ok) {
+      if (save) {
+        successNotification("Saved to favourite matches");
+      } else {
+        successNotification("Removed from favourite matches");
+      }
+    } else {
+      errorNotification("Error in saving to favourite matches");
+    }
+  } catch (error) {
+    console.log("Error while updating preferences:", error);
+    errorNotification("Error in saving to favourite matches");
+  }
+};
 
 const fetchMatch = async (
   matchID: number,
@@ -45,6 +97,23 @@ const MatchDetails = () => {
 
   const { theme } = useContext(ThemeContext);
 
+  const [preferences, setPreferences] = useState<any>(null);
+
+  const updateCheck = (id: number) => {
+    let save = false;
+    const newMatches =
+      preferences?.matches?.length > 0 ? [...preferences.matches] : [];
+    const index = newMatches.indexOf(id);
+    if (index > -1) {
+      newMatches.splice(index, 1);
+    } else {
+      newMatches.push(id);
+      save = true;
+    }
+    setPreferences({ ...preferences, matches: newMatches });
+    updatePreferences({ ...preferences, matches: newMatches }, save);
+  };
+
   let { matchID } = useParams();
   let navigate = useNavigate();
 
@@ -55,6 +124,7 @@ const MatchDetails = () => {
 
   useEffect(() => {
     fetchMatch(Number(matchID!), setMatch, setloading);
+    fetchPreferences(setPreferences);
   }, [matchID]);
 
   const formateDate = (Rdate: Date) => {
@@ -69,25 +139,18 @@ const MatchDetails = () => {
       "Saturday",
     ];
 
-    // Get the day of the week (0-6)
     const dayOfWeek = date.getDay();
 
-    // Get the day of the month (1-31)
     const dayOfMonth = date.getDate();
 
-    // Get the month (0-11)
     const month = date.getMonth();
 
-    // Get the year (4-digit year)
     const year = date.getFullYear();
 
-    // Format the date as "day, date"
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const formattedDate = `${
       daysOfWeek[dayOfWeek]
     }, ${dayOfMonth} ${getMonthName(month)} ${year}`;
 
-    // Function to get the name of the month
     function getMonthName(month: number) {
       const monthNames = [
         "January",
@@ -196,8 +259,8 @@ const MatchDetails = () => {
                             alt={`${match?.name}`}
                             className="w-full h-64 object-cover rounded-md"
                           />
-                          <div className="mt-1">
-                            <span className="relative">
+                          <div className="flex mt-1">
+                            <span className="flex-1 relative">
                               <div
                                 className={`flex justify-center leading-loose text-bold  ${
                                   match?.isRunning === true
@@ -207,11 +270,20 @@ const MatchDetails = () => {
                               >
                                 Live Now
                               </div>
+
                               <span className="flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                               </span>
                             </span>
+                            <button
+                              className="flex-1 ml-3  p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
+                              onClick={() => updateCheck(match?.id)}
+                            >
+                              {preferences?.matches?.includes(match?.id)
+                                ? "Remove"
+                                : "Save"}
+                            </button>
                           </div>
                         </div>
                         <div className="flex justify-between items-center">

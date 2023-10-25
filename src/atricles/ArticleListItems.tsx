@@ -2,10 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useArticlesState } from "../context/articles/context";
 import { Article } from "../context/articles/reducer";
-// import { Link } from "react-router-dom";
 import "../index.css";
 import React, { useEffect } from "react";
-// import { fetchArticle } from "../context/articles/actions";
 import { API_ENDPOINT } from "../../src/config/constants";
 import { Link } from "react-router-dom";
 
@@ -43,7 +41,9 @@ const fetchSports = async (
   }
 };
 
-export default function ArticleListItems() {
+export default function ArticleListItems(props: {
+  favouriteArticles?: number[];
+}) {
   let state: any = useArticlesState();
   const [sportsList, setSportsList] = React.useState<any>(null);
   const [currentSport, setSport] = React.useState<any>(null);
@@ -63,26 +63,27 @@ export default function ArticleListItems() {
   }
 
   const articleList = () => {
-    const arti = articles.filter(
-      (article: any) =>
-        (currentSport === article.sport.name || currentSport === null) &&
-        ((checkLogin() &&
-          (preferences.sports === undefined ||
-            preferences.sports.length === 0 ||
-            ((preferences.sports?.includes(article.sport.name) ||
-              preferences.sports?.length === 0) &&
-              (preferences.sports?.includes(article.sport.name) ||
+    const arti = articles.filter((article: any) =>
+      props.favouriteArticles === undefined
+        ? (currentSport === article.sport.name || currentSport === null) &&
+          ((checkLogin() &&
+            (preferences.sports === undefined ||
+              preferences.sports.length === 0 ||
+              ((preferences.sports?.includes(article.sport.name) ||
                 preferences.sports?.length === 0) &&
-              (article.teams.filter((item: any) =>
-                preferences.teams?.includes(item.name)
-              ).length > 0 ||
-                data?.filter(
-                  (item: any) =>
-                    item.plays === article.sport.name &&
-                    preferences.teams?.includes(item.name)
-                ).length === 0 ||
-                preferences.teams?.length === 0)))) ||
-          checkLogin() === false)
+                (preferences.sports?.includes(article.sport.name) ||
+                  preferences.sports?.length === 0) &&
+                (article.teams.filter((item: any) =>
+                  preferences.teams?.includes(item.name)
+                ).length > 0 ||
+                  data?.filter(
+                    (item: any) =>
+                      item.plays === article.sport.name &&
+                      preferences.teams?.includes(item.name)
+                  ).length === 0 ||
+                  preferences.teams?.length === 0)))) ||
+            checkLogin() === false)
+        : props?.favouriteArticles?.includes(article.id)
     );
     return arti;
   };
@@ -91,7 +92,9 @@ export default function ArticleListItems() {
     <div className="w-3/4 p-4 shadow rounded-lg">
       <div className="mb-2">
         <h2 className="text-gray-700  dark:text-white text-2xl font-medium tracking-tight mb-2 mr-4">
-          Trending News
+          {props.favouriteArticles === undefined
+            ? "Trending News"
+            : "Favourite News"}
         </h2>
         <button
           className={`${
@@ -102,14 +105,15 @@ export default function ArticleListItems() {
           {"Your News"}
         </button>
         {sportsList
-          ?.filter(
-            (sport: any) =>
-              (checkLogin() &&
-                (preferences.sports === undefined ||
-                  preferences.sports.length === 0 ||
-                  preferences.sports?.includes(sport.name) ||
-                  preferences.sports?.length === 0)) ||
-              checkLogin() === false
+          ?.filter((sport: any) =>
+            props.favouriteArticles === undefined
+              ? (checkLogin() &&
+                  (preferences.sports === undefined ||
+                    preferences.sports.length === 0 ||
+                    preferences.sports?.includes(sport.name) ||
+                    preferences.sports?.length === 0)) ||
+                checkLogin() === false
+              : null
           )
           .map((sport: any) => {
             return (
@@ -141,25 +145,18 @@ export default function ArticleListItems() {
                 "Saturday",
               ];
 
-              // Get the day of the week (0-6)
               const dayOfWeek = date.getDay();
 
-              // Get the day of the month (1-31)
               const dayOfMonth = date.getDate();
 
-              // Get the month (0-11)
               const month = date.getMonth();
 
-              // Get the year (4-digit year)
               const year = date.getFullYear();
 
-              // Format the date as "day, date"
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const formattedDate = `${
                 daysOfWeek[dayOfWeek]
               }, ${dayOfMonth} ${getMonthName(month)} ${year}`;
 
-              // Function to get the name of the month
               function getMonthName(month: number) {
                 const monthNames = [
                   "January",
@@ -203,7 +200,7 @@ export default function ArticleListItems() {
                             {article.title}
                           </div>
                           <p className="text-gray-700 text-base dark:text-white">
-                            {article.summary}
+                            {article.summary}...
                           </p>
                         </div>
                         <div className="flex px-6 py-2 justify-end">

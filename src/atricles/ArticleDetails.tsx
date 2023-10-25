@@ -8,6 +8,58 @@ import { API_ENDPOINT } from "../../src/config/constants";
 import closeIcon from "../assets/images/close.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../context/theme";
+import {
+  errorNotification,
+  successNotification,
+} from "../Notification/Notification";
+
+const fetchPreferences = async (setPreferences: (data: any) => void) => {
+  const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+
+  try {
+    const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const preferences = await response.json();
+    Object.keys(preferences.preferences).length === 0
+      ? null
+      : setPreferences(preferences.preferences);
+  } catch (error) {
+    console.log("Error fetching preferences:", error);
+  }
+};
+
+const updatePreferences = async (preferences: any, save: boolean) => {
+  const token = localStorage.getItem("authTokenSportsCenter") ?? "";
+
+  try {
+    const response = await fetch(`${API_ENDPOINT}/user/preferences`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ preferences: preferences }),
+    });
+    if (response.ok) {
+      if (save) {
+        successNotification("Saved to favourite articles");
+      } else {
+        successNotification("Removed from favourite articles");
+      }
+    } else {
+      errorNotification("Error in saving to favourite articles");
+    }
+  } catch (error) {
+    console.log("Error while updating preferences:", error);
+    errorNotification("Error in saving to favourite articles");
+  }
+};
 
 const fetchArticle = async (
   articleID: number,
@@ -41,6 +93,22 @@ const ArticalDetails = () => {
   const [isLoading, setloading] = useState<boolean>(false);
 
   const { theme } = useContext(ThemeContext);
+  const [preferences, setPreferences] = useState<any>(null);
+
+  const updateCheck = (id: number) => {
+    let save = false;
+    const newArticles =
+      preferences?.articles?.length > 0 ? [...preferences.articles] : [];
+    const index = newArticles.indexOf(id);
+    if (index > -1) {
+      newArticles.splice(index, 1);
+    } else {
+      newArticles.push(id);
+      save = true;
+    }
+    setPreferences({ ...preferences, articles: newArticles });
+    updatePreferences({ ...preferences, articles: newArticles }, save);
+  };
 
   let { articleID } = useParams();
   let navigate = useNavigate();
@@ -52,6 +120,7 @@ const ArticalDetails = () => {
 
   useEffect(() => {
     fetchArticle(Number(articleID!), setArticle, setloading);
+    fetchPreferences(setPreferences);
   }, [articleID]);
 
   const date = new Date(article?.date);
@@ -65,25 +134,18 @@ const ArticalDetails = () => {
     "Saturday",
   ];
 
-  // Get the day of the week (0-6)
   const dayOfWeek = date.getDay();
 
-  // Get the day of the month (1-31)
   const dayOfMonth = date.getDate();
 
-  // Get the month (0-11)
   const month = date.getMonth();
 
-  // Get the year (4-digit year)
   const year = date.getFullYear();
 
-  // Format the date as "day, date"
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formattedDate = `${daysOfWeek[dayOfWeek]}, ${dayOfMonth} ${getMonthName(
     month
   )} ${year}`;
 
-  // Function to get the name of the month
   function getMonthName(month: number) {
     const monthNames = [
       "January",
@@ -177,6 +239,16 @@ const ArticalDetails = () => {
                               );
                             })}
                           </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            className="flex-1   p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
+                            onClick={() => updateCheck(article?.id)}
+                          >
+                            {preferences?.articles?.includes(article?.id)
+                              ? "Remove"
+                              : "Save"}
+                          </button>
                         </div>
                         <h2 className="text-gray-800  dark:text-white text-md font-medium tracking-tight mb-2 mr-4">
                           {`Summary: ${article?.content}`}

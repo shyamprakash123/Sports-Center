@@ -5,7 +5,7 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Logo from "../../assets/images/logo.jpg";
 import SettingIcon from "../../assets/images/setting.svg";
 import { ThemeContext } from "../../context/theme";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const getMenuOptions = () => {
   const userNavigation = [
@@ -40,12 +40,11 @@ const Appbar = () => {
   const [enabled, setEnabled] = useState(false);
   const [isLogedin, setLogin] = useState(false);
   const [menu, setMenu] = useState(getMenuOptions());
-  // const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-  // const navigation = [
-  //   { name: "Projects", href: "/account/projects", current: false },
-  //   { name: "Members", href: "/account/members", current: false },
-  // ];
+  const navigation = [
+    { name: "Favourites", href: "/home/favourites", current: false },
+  ];
 
   useEffect(() => {
     setMenu(getMenuOptions());
@@ -79,7 +78,7 @@ const Appbar = () => {
               <h1 className="text-3xl font-semibold text-center pl-4 text-gray-700 dark:text-white">
                 Sports Center
               </h1>
-              {/* <div className="hidden md:block">
+              <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
                   {navigation.map((item) => {
                     const isCurrent = pathname.includes(item.href);
@@ -92,7 +91,7 @@ const Appbar = () => {
                           isCurrent
                             ? "bg-slate-50 text-blue-700"
                             : "text-slate-500 hover:text-blue-600",
-                          "rounded-md px-3 py-2 text-sm font-medium"
+                          "rounded-md px-3 py-2 text-sm font-medium bg-green-500 text-white"
                         )}
                         aria-current={isCurrent ? "page" : undefined}
                       >
@@ -101,7 +100,7 @@ const Appbar = () => {
                     );
                   })}
                 </div>
-              </div>*/}
+              </div>
             </div>
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
@@ -149,7 +148,7 @@ const Appbar = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:text-white dark:bg-gray-700 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       {menu
                         .filter((item) => item != null)
                         .map((item) => (
@@ -158,8 +157,8 @@ const Appbar = () => {
                               <Link
                                 to={`${item?.href}`}
                                 className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
+                                  active ? "bg-gray-100 dark:bg-gray-500" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 dark:text-white "
                                 )}
                               >
                                 {item?.name}

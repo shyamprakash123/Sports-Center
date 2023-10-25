@@ -12,6 +12,10 @@ import { useMatchesDispatch } from "../context/matches/context";
 import { fetchArticles } from "../context/articles/actions";
 import { useContext } from "react";
 import { ThemeContext } from "../context/theme";
+import {
+  errorNotification,
+  successNotification,
+} from "../Notification/Notification";
 
 const fetchPreferences = async (
   setPreferences: (data: any) => void,
@@ -72,10 +76,15 @@ const updatePreferences = async (preferences: any, closeModal: () => void) => {
       },
       body: JSON.stringify({ preferences: preferences }),
     });
-    console.log(response.status);
+    if (response.ok) {
+      successNotification("Preferences updated successfully");
+    } else {
+      errorNotification("Preferences could not update");
+    }
     closeModal();
   } catch (error) {
     console.log("Error fetching preferences:", error);
+    errorNotification("Preferences could not update");
     closeModal();
   }
 };

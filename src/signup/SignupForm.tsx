@@ -3,6 +3,11 @@ import React from "react";
 import { API_ENDPOINT } from "../../src/config/constants";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  errorNotification,
+  successNotification,
+} from "../Notification/Notification";
+import { Toaster } from "react-hot-toast";
 
 type Inputs = {
   Name: string;
@@ -30,18 +35,23 @@ const SignupForm: React.FC = () => {
       });
 
       if (!response.ok) {
+        const errorMessage = await response.json();
+        if (errorMessage.errors.length > 0) {
+          errorNotification(errorMessage.errors);
+        }
         throw new Error("Sign-up failed");
       }
       console.log("Sign-up successful");
+      successNotification("Sign-up successful");
       const data = await response.json();
 
-      // if successful, save the token in localStorage
       localStorage.setItem("authTokenSportsCenter", data.auth_token);
       localStorage.setItem("userDataSportsCenter", JSON.stringify(data.user));
 
       navigate("/home");
     } catch (error) {
       console.error("Sign-up failed:", error);
+      errorNotification("Sign-up failed");
     }
   };
 
@@ -90,6 +100,7 @@ const SignupForm: React.FC = () => {
       >
         Sign Up
       </button>
+      <Toaster />
     </form>
   );
 };

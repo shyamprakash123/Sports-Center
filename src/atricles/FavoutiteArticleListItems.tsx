@@ -2,10 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useArticlesState } from "../context/articles/context";
 import { Article } from "../context/articles/reducer";
-// import { Link } from "react-router-dom";
 import "../index.css";
 import React, { useEffect } from "react";
-// import { fetchArticle } from "../context/articles/actions";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_ENDPOINT } from "../../src/config/constants";
 import { Link } from "react-router-dom";
@@ -48,9 +46,7 @@ export default function FavouriteArticleListItems() {
   let state: any = useArticlesState();
   const [sportsList, setSportsList] = React.useState<any>(null);
   const [data, setData] = React.useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sport, setSport] = React.useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [team, setTeam] = React.useState<any>(null);
   const { articles, isLoading, isError, errorMessage, preferences } = state;
 
@@ -192,25 +188,18 @@ export default function FavouriteArticleListItems() {
               "Saturday",
             ];
 
-            // Get the day of the week (0-6)
             const dayOfWeek = date.getDay();
 
-            // Get the day of the month (1-31)
             const dayOfMonth = date.getDate();
 
-            // Get the month (0-11)
             const month = date.getMonth();
 
-            // Get the year (4-digit year)
             const year = date.getFullYear();
 
-            // Format the date as "day, date"
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const formattedDate = `${
               daysOfWeek[dayOfWeek]
             }, ${dayOfMonth} ${getMonthName(month)} ${year}`;
 
-            // Function to get the name of the month
             function getMonthName(month: number) {
               const monthNames = [
                 "January",

@@ -4,7 +4,6 @@ import {
   useMatchesDispatch,
   useMatchesState,
 } from "../context/matches/context";
-// import { Link } from "react-router-dom";
 import "../index.css";
 import { useState } from "react";
 import RefreshIcon from "../assets/images/refresh.svg";
@@ -16,8 +15,9 @@ const checkLogin = () => {
 };
 
 export default function MatchListItems(props: {
-  liveScores: boolean;
-  setLiveScores: (state: boolean) => void;
+  liveScores?: boolean;
+  setLiveScores?: (state: boolean) => void;
+  favouriteMatches?: number[];
 }) {
   const [Refresh, setRefresh] = useState<null | number>(null);
   let state: any = useMatchesState();
@@ -33,15 +33,16 @@ export default function MatchListItems(props: {
   }
 
   const filterMatches = () => {
-    return matches.filter(
-      (match: any) =>
-        match.isRunning === props.liveScores &&
-        ((checkLogin() &&
-          (preferences.sports === undefined ||
-            preferences.sports.length === 0 ||
-            preferences.sports?.includes(match.sportName) ||
-            preferences.sports?.length === 0)) ||
-          checkLogin() === false)
+    return matches.filter((match: any) =>
+      props?.favouriteMatches === undefined
+        ? match.isRunning === props?.liveScores &&
+          ((checkLogin() &&
+            (preferences.sports === undefined ||
+              preferences.sports.length === 0 ||
+              preferences.sports?.includes(match.sportName) ||
+              preferences.sports?.length === 0)) ||
+            checkLogin() === false)
+        : props?.favouriteMatches?.includes(match.id)
     );
   };
 
@@ -73,24 +74,18 @@ export default function MatchListItems(props: {
                 "Saturday",
               ];
 
-              // Get the day of the week (0-6)
               const dayOfWeek = endDate.getDay();
 
-              // Get the day of the month (1-31)
               const dayOfMonth = endDate.getDate();
 
-              // Get the month (0-11)
               const month = endDate.getMonth();
 
-              // Get the year (4-digit year)
               const year = endDate.getFullYear();
 
-              // Format the date as "day, date"
               const formattedDate = `${
                 daysOfWeek[dayOfWeek]
               }, ${dayOfMonth} ${getMonthName(month)} ${year}`;
 
-              // Function to get the name of the month
               function getMonthName(month: number) {
                 const monthNames = [
                   "January",
@@ -149,7 +144,12 @@ export default function MatchListItems(props: {
                         <span className="font-normal">{hours} hrs</span>
                       </div>
                       <Link
-                        to={`/home/matches/${match.id}`}
+                        to={
+                          props.favouriteMatches !== undefined &&
+                          props.favouriteMatches.length > 0
+                            ? `/home/favourites/matches/${match.id}`
+                            : `/home/matches/${match.id}`
+                        }
                         className="inline-block border  rounded hover:border-gray-200 text-blue-500 hover:bg-gray-200 py-1 px-3"
                       >
                         View Match
@@ -199,7 +199,7 @@ export default function MatchListItems(props: {
                           <span className="relative">
                             <div
                               className={`flex justify-center leading-loose text-bold  ${
-                                props.liveScores === true
+                                match?.isRunning === true
                                   ? "bg-green-500"
                                   : "bg-red-500"
                               }  text-white p-1 px-2 rounded-lg uppercase text-xs tracking-wider`}

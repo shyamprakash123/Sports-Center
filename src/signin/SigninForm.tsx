@@ -1,8 +1,12 @@
 import React from "react";
-// First we will import the API_ENDPOINT constant from the `config` folder
 import { API_ENDPOINT } from "../../src/config/constants";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  errorNotification,
+  successNotification,
+} from "../Notification/Notification";
+import { Toaster } from "react-hot-toast";
 
 type Inputs = {
   email: string;
@@ -23,26 +27,29 @@ const SigninForm: React.FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
       if (!response.ok) {
+        const errorMessage = await response.json();
+        if (errorMessage.errors.length > 0) {
+          errorNotification(errorMessage.errors);
+        }
         throw new Error("Sign-in failed");
       }
 
       console.log("Sign-in successful");
 
-      // Extract the response body as JSON data
+      successNotification("Sign-in successful");
+
       const data = await response.json();
 
-      // After successful signin, first we will save the token in localStorage
       localStorage.setItem("authTokenSportsCenter", data.auth_token);
       localStorage.setItem("userDataSportsCenter", JSON.stringify(data.user));
       navigate("/home");
     } catch (error) {
       console.error("Sign-in failed:", error);
+      errorNotification("Sign-in failed");
     }
   };
 
-  // Then we will use the handleSubmit function with our form
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
@@ -75,6 +82,7 @@ const SigninForm: React.FC = () => {
       >
         Sign In
       </button>
+      <Toaster />
     </form>
   );
 };
