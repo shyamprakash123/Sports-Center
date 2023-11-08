@@ -101,28 +101,28 @@ You can customize your sports preferences and save favorites in the app:
 ## Screenshots:
 
 1. **Home**:
-   ![Home](<src/assets/Screen Shots/Home.png>)
+   ![Home](<src/assets/Screenshots/Home.png>)
 
 2. **Dark Home**:
-   ![Dark Home](<src/assets/Screen Shots/Dark Home.png>)
+   ![Dark Home](<src/assets/Screenshots/Dark Home.png>)
 
 3. **Match Details**:
-   ![Match Details](<src/assets/Screen Shots/Match Details.png>)
+   ![Match Details](<src/assets/Screenshots/Match Details.png>)
 
 4. **Article Details**:
-   ![Article Details](<src/assets/Screen Shots/Article Details.png>)
+   ![Article Details](<src/assets/Screenshots/Article Details.png>)
 
 5. **Home (Bottom Section)**:
-   ![Home (Bottom Section)](<src/assets/Screen Shots/Home (bottom section).png>)
+   ![Home (Bottom Section)](<src/assets/Screenshots/Home (bottom section).png>)
 
 6. **Preferences**:
-   ![Preferences](<src/assets/Screen Shots/Preferences.png>)
+   ![Preferences](<src/assets/Screenshots/Preferences.png>)
 
 7. **Favourites**:
-   ![Favourites](<src/assets/Screen Shots/Favourites.png>)
+   ![Favourites](<src/assets/Screenshots/Favourites.png>)
 
 8. **Change Password**:
-   ![Change Password](<src/assets/Screen Shots/Change Password.png>)
+   ![Change Password](<src/assets/Screenshots/Change Password.png>)
 
 Checkout the deployed website on [Sports-Center](https://sports-center-shyam-prakash.netlify.app/).
 
