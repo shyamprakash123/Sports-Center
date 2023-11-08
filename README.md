@@ -98,4 +98,32 @@ You can customize your sports preferences and save favorites in the app:
 5. **Change Password**:
    - In the profile settings, you can change your account password for improved security.
 
+## Screenshots:
+
+1. **Home**:
+   ![Home](<src/assets/Screen Shots/Home.png>)
+
+2. **Dark Home**:
+   ![Dark Home](<src/assets/Screen Shots/Dark Home.png>)
+
+3. **Match Details**:
+   ![Match Details](<src/assets/Screen Shots/Match Details.png>)
+
+4. **Article Details**:
+   ![Article Details](<src/assets/Screen Shots/Article Details.png>)
+
+5. **Home (Bottom Section)**:
+   ![Home (Bottom Section)](<src/assets/Screen Shots/Home (bottom section).png>)
+
+6. **Preferences**:
+   ![Preferences](<src/assets/Screen Shots/Preferences.png>)
+
+7. **Favourites**:
+   ![Favourites](<src/assets/Screen Shots/Favourites.png>)
+
+8. **Change Password**:
+   ![Change Password](<src/assets/Screen Shots/Change Password.png>)
+
 Checkout the deployed website on [Sports-Center](https://sports-center-shyam-prakash.netlify.app/).
+
+Here is the demo video to get started https://www.loom.com/share/cb651b9f5fa3479990db3def15e921bf?sid=8d72a085-1094-44ac-8427-164b6c7326d8
