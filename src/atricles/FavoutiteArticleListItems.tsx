@@ -90,7 +90,7 @@ export default function FavouriteArticleListItems() {
   };
 
   return (
-    <div className="w-1/4 p-4 shadow rounded-lg ml-3">
+    <div className="w-1/4 p-4 shadow rounded-lg ml-3 dark:bg-gray-900 bg-slate-50">
       <div className="flex flex-col r">
         <h2 className="text-gray-700  dark:text-white text-2xl font-medium tracking-tight mb-2 mr-4">
           Favourites

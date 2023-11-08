@@ -26,7 +26,7 @@ const MatchList: React.FC = () => {
           />
         </Switch>
       </div>
-      <div className="flex">
+      <div className="flex mb-5">
         <MatchListItems liveScores={LiveScores} setLiveScores={setLiveScores} />
       </div>
     </>

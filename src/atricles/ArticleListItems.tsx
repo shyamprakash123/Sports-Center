@@ -89,7 +89,7 @@ export default function ArticleListItems(props: {
   };
 
   return (
-    <div className="w-3/4 p-4 shadow rounded-lg">
+    <div className="w-3/4 p-4 shadow rounded-lg dark:bg-gray-900 bg-slate-50">
       <div className="mb-2">
         <h2 className="text-gray-700  dark:text-white text-2xl font-medium tracking-tight mb-2 mr-4">
           {props.favouriteArticles === undefined
