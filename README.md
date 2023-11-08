@@ -103,7 +103,7 @@ You can customize your sports preferences and save favorites in the app:
 1. **Home**:
    ![Home](<src/assets/Screenshots/Home.png>)
 
-2. **Dark Home**:
+2. **Home (Dark)**:
    ![Dark Home](<src/assets/Screenshots/Dark Home.png>)
 
 3. **Match Details**:
@@ -124,6 +124,6 @@ You can customize your sports preferences and save favorites in the app:
 8. **Change Password**:
    ![Change Password](<src/assets/Screenshots/Change Password.png>)
 
-Checkout the deployed website on [Sports-Center](https://sports-center-shyam-prakash.netlify.app/).
+### -> Checkout the deployed website on [Sports-Center](https://sports-center-shyam-prakash.netlify.app/).
 
-Here is the demo video to get started https://www.loom.com/share/cb651b9f5fa3479990db3def15e921bf?sid=8d72a085-1094-44ac-8427-164b6c7326d8
+**Here is the demo video to get started** https://www.loom.com/share/cb651b9f5fa3479990db3def15e921bf?sid=8d72a085-1094-44ac-8427-164b6c7326d8
