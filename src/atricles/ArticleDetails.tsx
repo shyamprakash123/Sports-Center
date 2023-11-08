@@ -13,6 +13,12 @@ import {
   successNotification,
 } from "../Notification/Notification";
 
+const checkLogin = (setLogin: (isLogedin: boolean) => void) => {
+  localStorage.getItem("authTokenSportsCenter") === null
+    ? setLogin(false)
+    : setLogin(true);
+};
+
 const fetchPreferences = async (setPreferences: (data: any) => void) => {
   const token = localStorage.getItem("authTokenSportsCenter") ?? "";
 
@@ -95,6 +101,8 @@ const ArticalDetails = () => {
   const { theme } = useContext(ThemeContext);
   const [preferences, setPreferences] = useState<any>(null);
 
+  const [isLogedin, setLogin] = useState(false);
+
   const updateCheck = (id: number) => {
     let save = false;
     const newArticles =
@@ -121,6 +129,7 @@ const ArticalDetails = () => {
   useEffect(() => {
     fetchArticle(Number(articleID!), setArticle, setloading);
     fetchPreferences(setPreferences);
+    checkLogin(setLogin);
   }, [articleID]);
 
   const date = new Date(article?.date);
@@ -241,14 +250,16 @@ const ArticalDetails = () => {
                           </div>
                         </div>
                         <div className="flex">
-                          <button
-                            className="flex-1   p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
-                            onClick={() => updateCheck(article?.id)}
-                          >
-                            {preferences?.articles?.includes(article?.id)
-                              ? "Remove"
-                              : "Save"}
-                          </button>
+                          {isLogedin ? (
+                            <button
+                              className="flex-1   p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
+                              onClick={() => updateCheck(article?.id)}
+                            >
+                              {preferences?.articles?.includes(article?.id)
+                                ? "Remove"
+                                : "Save"}
+                            </button>
+                          ) : null}
                         </div>
                         <h2 className="text-gray-800  dark:text-white text-md font-medium tracking-tight mb-2 mr-4">
                           {`Summary: ${article?.content}`}

@@ -10,6 +10,7 @@ import Preferences from "../Preferences/Preferences";
 import MatchDetails from "../matches/MatchDetails";
 import UpdatePassword from "../changepassword/ChangePassword";
 import { FavouriteMatches } from "../matches/FavouriteMatches";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   { path: "/", element: <Navigate to="/home" replace /> },
@@ -35,7 +36,11 @@ const router = createBrowserRouter([
   },
   {
     path: "home/favourites",
-    element: <FavouriteMatches />,
+    element: (
+      <ProtectedRoute>
+        <FavouriteMatches />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "matches/:matchID",
@@ -62,11 +67,19 @@ const router = createBrowserRouter([
       },
       {
         path: "preferences",
-        element: <Preferences />,
+        element: (
+          <ProtectedRoute>
+            <Preferences />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "changepassword",
-        element: <UpdatePassword />,
+        element: (
+          <ProtectedRoute>
+            <UpdatePassword />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

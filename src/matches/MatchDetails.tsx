@@ -13,6 +13,12 @@ import {
   successNotification,
 } from "../Notification/Notification";
 
+const checkLogin = (setLogin: (isLogedin: boolean) => void) => {
+  localStorage.getItem("authTokenSportsCenter") === null
+    ? setLogin(false)
+    : setLogin(true);
+};
+
 const fetchPreferences = async (setPreferences: (data: any) => void) => {
   const token = localStorage.getItem("authTokenSportsCenter") ?? "";
 
@@ -99,6 +105,8 @@ const MatchDetails = () => {
 
   const [preferences, setPreferences] = useState<any>(null);
 
+  const [isLogedin, setLogin] = useState(false);
+
   const updateCheck = (id: number) => {
     let save = false;
     const newMatches =
@@ -125,6 +133,7 @@ const MatchDetails = () => {
   useEffect(() => {
     fetchMatch(Number(matchID!), setMatch, setloading);
     fetchPreferences(setPreferences);
+    checkLogin(setLogin);
   }, [matchID]);
 
   const formateDate = (Rdate: Date) => {
@@ -276,14 +285,16 @@ const MatchDetails = () => {
                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                               </span>
                             </span>
-                            <button
-                              className="flex-1 ml-3  p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
-                              onClick={() => updateCheck(match?.id)}
-                            >
-                              {preferences?.matches?.includes(match?.id)
-                                ? "Remove"
-                                : "Save"}
-                            </button>
+                            {isLogedin ? (
+                              <button
+                                className="flex-1 ml-3  p-1 px-2 rounded-lg uppercase text-xs tracking-wider bg-blue-500 hover:bg-blue-700 text-white font-bold py-2"
+                                onClick={() => updateCheck(match?.id)}
+                              >
+                                {preferences?.matches?.includes(match?.id)
+                                  ? "Remove"
+                                  : "Save"}
+                              </button>
+                            ) : null}
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
